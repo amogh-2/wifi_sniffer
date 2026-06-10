@@ -4,9 +4,9 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
-const char* WIFI_SSID     = "YOUR SSID";
-const char* WIFI_PASSWORD = "YOUR PASSWORD";
-const char* MQTT_BROKER   = "BROKER'S IP ADDRESS";
+const char* WIFI_SSID     = "firewall";
+const char* WIFI_PASSWORD = "12345679";
+const char* MQTT_BROKER   = "192.168.1.69";
 const int   MQTT_PORT     = 1883;
 const char* MQTT_TOPIC    = "wifi/monitor/devices";
 const char* MQTT_CLIENT   = "esp32-sniffer";
@@ -57,7 +57,6 @@ typedef struct {
 #define FC_SUBTYPE_PROBE_REQ  0x0040
 #define FC_SUBTYPE_BEACON     0x0080
 
--
 void IRAM_ATTR snifferCallback(void* buf, wifi_promiscuous_pkt_type_t type) {
   if (type != WIFI_PKT_MGMT) return;
   wifi_promiscuous_pkt_t* pkt = (wifi_promiscuous_pkt_t*)buf;
@@ -189,7 +188,6 @@ void setup() {
   wifi_promiscuous_filter_t filter = {.filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT};
   esp_wifi_set_promiscuous_filter(&filter);
   esp_wifi_set_promiscuous_rx_cb(&snifferCallback);
-  e
   Serial.println("\n[System] Starting Sniffing Phase...");
   esp_wifi_set_promiscuous(true);
   esp_wifi_set_channel(currentChannel, WIFI_SECOND_CHAN_NONE);
